@@ -18,12 +18,14 @@ package com.sonyericsson.zoom;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.FloatMath;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -32,8 +34,15 @@ import android.view.ViewConfiguration;
 import java.util.Observable;
 import java.util.Observer;
 
+import com.sonyericsson.tutorial.zoom4.R;
 
 
+/**
+ * Steps to implement flip rotation
+ * Send left and right images from activity and combine them here
+ * when rotating based on direction add transparent image to top view container at respective position(if loading next page left image will be transparent and vice versa
+ * 
+ * */
 
 
 /**
@@ -115,12 +124,18 @@ public class ImageZoomView extends View implements Observer {
      */
     public void setImage(Bitmap bitmap) {
         mBitmap = bitmap;
-
+//mBitmap2 =bitmap;
         mAspectQuotient.updateAspectQuotient(getWidth(), getHeight(), mBitmap.getWidth(), mBitmap
                 .getHeight());
         mAspectQuotient.notifyObservers();
 
         invalidate();
+    }
+    
+    public void setImage2(Bitmap bitmap) {
+       
+mBitmap2 =bitmap;
+invalidate();
     }
 
     /**
@@ -153,6 +168,7 @@ public class ImageZoomView extends View implements Observer {
     @Override
     protected void onDraw(Canvas canvas) {
         if (mBitmap != null && mState != null) {
+        	Log.d("", "onDraw");
             final float aspectQuotient = mAspectQuotient.get();
 
             final int viewWidth = getWidth();
@@ -192,15 +208,17 @@ public class ImageZoomView extends View implements Observer {
                 mRectDst.bottom -= (mRectSrc.bottom - bitmapHeight) * zoomY;
                 mRectSrc.bottom = bitmapHeight;
             }
-
+            Rect test = new Rect(0, 0, mRectDst.right, mRectDst.bottom+10);
+            
             canvas.drawBitmap(mBitmap, mRectSrc, mRectDst, mPaint);
+            canvas.drawBitmap(mBitmap2, mRectSrc, mRectDst, mPaint);
         }
     }
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-
+Log.d("", "onLayout");
         mAspectQuotient.updateAspectQuotient(right - left, bottom - top, mBitmap.getWidth(),
                 mBitmap.getHeight());
         mAspectQuotient.notifyObservers();

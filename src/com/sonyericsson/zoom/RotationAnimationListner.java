@@ -12,12 +12,16 @@ import android.widget.ImageView;
 public class RotationAnimationListner {
 	
 	private ImageView mLeftImage,mRightImage;
+	private int mLeftImageId,mRightImageId;
 	private Context mContext;
 	  AnimationListener listener = new AnimationListener() {
 
           @Override
           public void onAnimationStart(Animation animation) {
         	  Log.d("TopLayerAnimation", "onAnimationStart");
+        	  mLeftImage.setBackgroundDrawable(mContext.getResources().getDrawable(mLeftImageId));
+        	  mRightImage.setBackgroundDrawable(mContext.getResources().getDrawable(mRightImageId));
+
           }
 
           @Override
@@ -28,14 +32,26 @@ public class RotationAnimationListner {
           @Override
           public void onAnimationEnd(Animation animation) {
         	  Log.d("TopLayerAnimation", "onAnimationEnd"+mContext);
-//        	  mLeftImage.setBackgroundDrawable(mContext.getResources().getDrawable(android.R.color.transparent));
-//        	  mRightImage.setBackgroundDrawable(mContext.getResources().getDrawable(android.R.color.transparent));
+        	  mLeftImage.setBackgroundDrawable(mContext.getResources().getDrawable(android.R.color.transparent));
+        	  mRightImage.setBackgroundDrawable(mContext.getResources().getDrawable(android.R.color.transparent));
           }
 
       };
 
 
-      public ImageView getmLeftImage() {
+      public int getmLeftImageId() {
+		return mLeftImageId;
+	}
+	public void setmLeftImageId(int mLeftImageId) {
+		this.mLeftImageId = mLeftImageId;
+	}
+	public int getmRightImageId() {
+		return mRightImageId;
+	}
+	public void setmRightImageId(int mRightImageId) {
+		this.mRightImageId = mRightImageId;
+	}
+	public ImageView getmLeftImage() {
 		return mLeftImage;
 	}
 	public void setmLeftImage(ImageView mLeftImage) {

@@ -27,6 +27,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -56,24 +58,31 @@ public class TutorialZoomActivity4 extends Activity {
 
     /** Decoded bitmap image */
     private Bitmap mBitmap;
+    private Bitmap mBitmap2;
 private ImageView leftUpperView;
+private ImageView rightUpperView;
     /** On touch listener for zoom view */
     private LongPressZoomListener mZoomListener;
     
     private PinchZoomListener mPinchZoomListener;
     
     private boolean longpressZoom = false;
+    Rect mRectSrc;
+    Rect mRectDst;
+    Paint mPaint;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.d(TAG, "onCreate");
         setContentView(R.layout.main);
 
         mZoomControl = new DynamicZoomControl();
 leftUpperView = (ImageView)findViewById(R.id.leftUpperView);
+rightUpperView = (ImageView)findViewById(R.id.rightUpperView);
 //        mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.image800x600);
 mBitmap = combineImages(BitmapFactory.decodeResource(getResources(), R.drawable.page1), BitmapFactory.decodeResource(getResources(), R.drawable.page2));
+mBitmap2 = combineImages(BitmapFactory.decodeResource(getResources(), R.drawable.page1), BitmapFactory.decodeResource(getResources(), R.drawable.page1));
         mZoomListener = new LongPressZoomListener(getApplicationContext());
         mZoomListener.setZoomControl(mZoomControl);
         mPinchZoomListener = new PinchZoomListener(getApplicationContext());
@@ -82,6 +91,7 @@ mBitmap = combineImages(BitmapFactory.decodeResource(getResources(), R.drawable.
         
         mZoomView = (ImageZoomView)findViewById(R.id.zoomview);
         mZoomView.setZoomState(mZoomControl.getZoomState());
+        mZoomView.setImage2(mBitmap2);
         mZoomView.setImage(mBitmap);
 
         mZoomControl.setAspectQuotient(mZoomView.getAspectQuotient());
@@ -104,6 +114,7 @@ mBitmap = combineImages(BitmapFactory.decodeResource(getResources(), R.drawable.
                     b.setText("LongPressZoom");
                 }else{
                 leftUpperView.setBackgroundDrawable(getResources().getDrawable(android.R.color.transparent));
+                rightUpperView.setBackgroundDrawable(getResources().getDrawable(android.R.color.transparent));
             	mBitmap = combineImages(BitmapFactory.decodeResource(getResources(), R.drawable.page1), BitmapFactory.decodeResource(getResources(), R.drawable.page2));
             	mZoomView.setImage(mBitmap);
             	    longpressZoom = true;
@@ -121,6 +132,25 @@ mBitmap = combineImages(BitmapFactory.decodeResource(getResources(), R.drawable.
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
+   
+    @Override
+	protected void onResume() {
+		super.onResume();
+		Log.d(TAG, "onResume");
+		mRectDst = mZoomView.getmRectDst();
+		mRectSrc = mZoomView.getmRectSrc();
+		leftUpperView.setLeft(mRectDst.left);
+		leftUpperView.setRight(mRectDst.right/2);
+		leftUpperView.setBottom(mRectDst.bottom);
+		leftUpperView.setTop(mRectDst.top);
+//
+//		rightUpperView.setLeft(mRectDst.right/2);
+//		rightUpperView.setRight(mRectDst.right);
+//		rightUpperView.setBottom(mRectDst.bottom);
+//		rightUpperView.setTop(mRectDst.top);
+	}
+
+    
     
     @Override
     public void onPause(){

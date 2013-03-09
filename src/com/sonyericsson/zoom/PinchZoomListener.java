@@ -111,7 +111,11 @@ public class PinchZoomListener implements View.OnTouchListener {
                         mZoomControl.startFling(-mVelocityTracker.getXVelocity() / v.getWidth(),
                                 -mVelocityTracker.getYVelocity() / v.getHeight());
                     }
-                } else if(mMode != Mode.PINCHZOOM) {
+                } else if(mMode == Mode.PAN&&mZoomControl.getZoomState().getZoom()==mZoomControl.getMinZoom()) {
+                	Log.d(TAG, "onTouch ACTION_UP:"+mMode+":"+mZoomControl.getZoomState().getZoom());
+                	mZoomControl.startFling(0, 0);
+                	// start flip animation here and change pages.-Ankit
+                }else if(mMode != Mode.PINCHZOOM) {
                     mZoomControl.startFling(0, 0);
                 }
                 mVelocityTracker.recycle();

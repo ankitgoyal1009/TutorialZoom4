@@ -18,7 +18,8 @@ public final class R {
     }
     public static final class id {
         public static final int leftUpperView=0x7f050001;
-        public static final int zoomtype=0x7f050002;
+        public static final int rightUpperView=0x7f050002;
+        public static final int zoomtype=0x7f050003;
         public static final int zoomview=0x7f050000;
     }
     public static final class layout {
