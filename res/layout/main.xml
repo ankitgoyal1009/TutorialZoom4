@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal" >
+
+    <com.sonyericsson.zoom.ImageZoomView
+        android:id="@+id/zoomview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:background="@android:color/holo_blue_bright" />
+    <!--
+    <com.sonyericsson.zoom.ImageZoomView
+        android:id="@+id/zoomview2"
+        android:layout_width="480dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+     
+        android:layout_toRightOf="@id/zoomview"
+        android:background="@android:color/holo_blue_bright" />
+    -->
+
+    <ImageView
+        android:id="@+id/leftUpperView"
+        android:layout_width="wrap_content"
+        android:layout_alignParentLeft="true"
+        
+          
+        android:layout_height="wrap_content" 
+        android:background="@drawable/page2"/>
+<!--     <ImageView
+        android:id="@+id/rightUpperView"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/leftUpperView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+           
+        android:background="@drawable/image800x600"/> -->
+    <Button
+        android:id="@+id/zoomtype"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LongPressZoom"
+        android:visibility="visible" />
+
+</RelativeLayout>
