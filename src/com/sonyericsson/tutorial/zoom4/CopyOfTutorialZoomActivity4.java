@@ -81,7 +81,7 @@ Paint mPaint;
 		rotationListner = new RotationAnimationListner();
 
 		mZoomControl = new DynamicZoomControl();
-		leftUpperView = (ImageView) findViewById(R.id.leftUpperView);
+//		leftUpperView = (ImageView) findViewById(R.id.leftUpperView);
 //		rightUpperView = (ImageView) findViewById(R.id.rightUpperView);
 		mBitmap = combineImages(
 				BitmapFactory.decodeResource(getResources(), R.drawable.page1),

@@ -208,10 +208,9 @@ invalidate();
                 mRectDst.bottom -= (mRectSrc.bottom - bitmapHeight) * zoomY;
                 mRectSrc.bottom = bitmapHeight;
             }
-            Rect test = new Rect(0, 0, mRectDst.right, mRectDst.bottom+10);
             
             canvas.drawBitmap(mBitmap, mRectSrc, mRectDst, mPaint);
-            canvas.drawBitmap(mBitmap2, mRectSrc, mRectDst, mPaint);
+         //   canvas.drawBitmap(mBitmap2, mRectSrc, mRectDst, mPaint);
         }
     }
 

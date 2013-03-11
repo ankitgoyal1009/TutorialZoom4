@@ -20,6 +20,7 @@ import com.sonyericsson.zoom.DynamicZoomControl;
 import com.sonyericsson.zoom.ImageZoomView;
 import com.sonyericsson.zoom.LongPressZoomListener;
 import com.sonyericsson.zoom.PinchZoomListener;
+import com.sonyericsson.zoom.RotationAnimationListner;
 
 import com.sonyericsson.tutorial.zoom4.R;
 import android.app.Activity;
@@ -46,21 +47,25 @@ import android.widget.Toast;
  * Activity for zoom tutorial 1
  */
 public class TutorialZoomActivity4 extends Activity {
+	
+	 private RotationAnimationListner rotationListner;
 	private static final String TAG = "TutorialZoomActivity4";
     /** Constant used as menu item id for resetting zoom state */
     private static final int MENU_ID_RESET = 0;
 
     /** Image zoom view */
     private ImageZoomView mZoomView;
-
+    /** Image zoom view */
+    private ImageZoomView mZoomView2;
+    
     /** Zoom control */
     private DynamicZoomControl mZoomControl;
 
     /** Decoded bitmap image */
     private Bitmap mBitmap;
     private Bitmap mBitmap2;
-private ImageView leftUpperView;
-private ImageView rightUpperView;
+private ImageView leftUpperView1;
+private ImageView rightUpperView1;
     /** On touch listener for zoom view */
     private LongPressZoomListener mZoomListener;
     
@@ -76,49 +81,50 @@ private ImageView rightUpperView;
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
         setContentView(R.layout.main);
-
+    	rotationListner = new RotationAnimationListner();
         mZoomControl = new DynamicZoomControl();
-leftUpperView = (ImageView)findViewById(R.id.leftUpperView);
-rightUpperView = (ImageView)findViewById(R.id.rightUpperView);
+//leftUpperView = (ImageView)findViewById(R.id.leftUpperView);
+//rightUpperView = (ImageView)findViewById(R.id.rightUpperView);
 //        mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.image800x600);
 mBitmap = combineImages(BitmapFactory.decodeResource(getResources(), R.drawable.page1), BitmapFactory.decodeResource(getResources(), R.drawable.page2));
-mBitmap2 = combineImages(BitmapFactory.decodeResource(getResources(), R.drawable.page1), BitmapFactory.decodeResource(getResources(), R.drawable.page1));
+mBitmap2 = combineImages(BitmapFactory.decodeResource(getResources(), R.drawable.page1), BitmapFactory.decodeResource(getResources(), R.drawable.page2));
         mZoomListener = new LongPressZoomListener(getApplicationContext());
         mZoomListener.setZoomControl(mZoomControl);
         mPinchZoomListener = new PinchZoomListener(getApplicationContext());
         mPinchZoomListener.setZoomControl(mZoomControl);
-        
-        
+       
         mZoomView = (ImageZoomView)findViewById(R.id.zoomview);
         mZoomView.setZoomState(mZoomControl.getZoomState());
         mZoomView.setImage2(mBitmap2);
         mZoomView.setImage(mBitmap);
-
+ 
+        
+        mZoomView2 = (ImageZoomView)findViewById(R.id.zoomview2);
+        mZoomView2.setZoomState(mZoomControl.getZoomState());
+        mZoomView2.setImage2(mBitmap2);
+        mZoomView2.setImage(mBitmap);
         mZoomControl.setAspectQuotient(mZoomView.getAspectQuotient());
+        mZoomControl.setAspectQuotient(mZoomView2.getAspectQuotient());
 
         resetZoomState();
         
         mZoomView.setOnTouchListener(mPinchZoomListener);
-        
+        mZoomView2.setOnTouchListener(mPinchZoomListener);
        final Button b = (Button)this.findViewById(R.id.zoomtype); 
         b.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-            	/*leftUpperView.setBackgroundDrawable(getResources().getDrawable(R.drawable.page2));
-            	mBitmap = combineImages(BitmapFactory.decodeResource(getResources(), R.drawable.page2), BitmapFactory.decodeResource(getResources(), R.drawable.page1));
-            	mZoomView.setImage(mBitmap);
-                */if(longpressZoom){
-                   leftUpperView.setBackgroundDrawable(getResources().getDrawable(R.drawable.page2));
-            	mBitmap = combineImages(BitmapFactory.decodeResource(getResources(), R.drawable.page2), BitmapFactory.decodeResource(getResources(), R.drawable.page1));
-            	mZoomView.setImage(mBitmap);
+            	if(longpressZoom){
+            	//mBitmap = combineImages(BitmapFactory.decodeResource(getResources(), R.drawable.page2), BitmapFactory.decodeResource(getResources(), R.drawable.page1));
+            	//mZoomView.setImage(mBitmap);
             	    longpressZoom = false;
                     b.setText("LongPressZoom");
+                    applyRotation(0, -90, -180, mZoomView, false);
                 }else{
-                leftUpperView.setBackgroundDrawable(getResources().getDrawable(android.R.color.transparent));
-                rightUpperView.setBackgroundDrawable(getResources().getDrawable(android.R.color.transparent));
-            	mBitmap = combineImages(BitmapFactory.decodeResource(getResources(), R.drawable.page1), BitmapFactory.decodeResource(getResources(), R.drawable.page2));
-            	mZoomView.setImage(mBitmap);
+             //	mBitmap = combineImages(BitmapFactory.decodeResource(getResources(), R.drawable.page1), BitmapFactory.decodeResource(getResources(), R.drawable.page2));
+            //	mZoomView.setImage(mBitmap);
             	    longpressZoom = true;
                     b.setText("PinchZoom");
+                    applyRotation(0, 90, -180, mZoomView, false);
                 }
             	
             }
@@ -132,22 +138,24 @@ mBitmap2 = combineImages(BitmapFactory.decodeResource(getResources(), R.drawable
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
-   
+	protected void applyRotation(int i, int j, int k, ImageView leftUpperView2,
+			boolean b) {
+    	/*rotationListner.setmLeftImage();
+    	rotationListner.setmRightImage();*/
+		rotationListner.applyRotation(i, j, k, leftUpperView2, b);
+		
+	}
+	protected void applyRotation(int i, int j, int k, ImageZoomView leftUpperView2,
+			boolean b) {
+    	/*rotationListner.setmLeftImage();
+    	rotationListner.setmRightImage();*/
+		rotationListner.applyRotation(i, j, k, leftUpperView2, b);
+		
+	}
     @Override
 	protected void onResume() {
 		super.onResume();
 		Log.d(TAG, "onResume");
-		mRectDst = mZoomView.getmRectDst();
-		mRectSrc = mZoomView.getmRectSrc();
-		leftUpperView.setLeft(mRectDst.left);
-		leftUpperView.setRight(mRectDst.right/2);
-		leftUpperView.setBottom(mRectDst.bottom);
-		leftUpperView.setTop(mRectDst.top);
-//
-//		rightUpperView.setLeft(mRectDst.right/2);
-//		rightUpperView.setRight(mRectDst.right);
-//		rightUpperView.setBottom(mRectDst.bottom);
-//		rightUpperView.setTop(mRectDst.top);
 	}
 
     
@@ -167,6 +175,7 @@ mBitmap2 = combineImages(BitmapFactory.decodeResource(getResources(), R.drawable
 
         mBitmap.recycle();
         mZoomView.setOnTouchListener(null);
+        mZoomView2.setOnTouchListener(null);
         mZoomControl.getZoomState().deleteObservers();
     }
 
@@ -200,14 +209,8 @@ mBitmap2 = combineImages(BitmapFactory.decodeResource(getResources(), R.drawable
         Bitmap cs = null; 
      
         int width, height = 0; 
-         
-        /*if(c.getWidth() > s.getWidth()) { 
-          width = c.getWidth(); 
-          height = c.getHeight() + s.getHeight(); 
-        } else { */
           width = s.getWidth()+c.getWidth(); 
           height = c.getHeight() ; 
-        //} 
      
         cs = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888); 
      
@@ -220,46 +223,5 @@ mBitmap2 = combineImages(BitmapFactory.decodeResource(getResources(), R.drawable
         return cs; 
       } 
 
-	class SimpleGestureListner123 implements OnGestureListener {
-
-		
-
-		@Override
-		public boolean onDown(MotionEvent e) {
-			Log.d(TAG, "onDown from SimpleGestureListner");
-			return false;
-		}
-
-		@Override
-		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-				float velocityY) {
-			Log.d(TAG, "onFling from SimpleGestureListner");
-			//changeMe(null);
-			return false;
-		}
-
-		@Override
-		public void onLongPress(MotionEvent e) {
-			Log.d(TAG, "onLongPress from SimpleGestureListner");
-		}
-
-		@Override
-		public boolean onScroll(MotionEvent e1, MotionEvent e2,
-				float distanceX, float distanceY) {
-			//Log.d(TAG, "onScroll from >>>>SimpleGestureListner");
-			return false;
-		}
-
-		@Override
-		public void onShowPress(MotionEvent e) {
-			Log.d(TAG, "onShowPress from SimpleGestureListner");
-		}
-
-		@Override
-		public boolean onSingleTapUp(MotionEvent e) {
-			Log.d(TAG, "onSingleTapUp from SimpleGestureListner");
-			return false;
-		}
-
-	}
+	
 }
