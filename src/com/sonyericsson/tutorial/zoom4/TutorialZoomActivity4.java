@@ -54,18 +54,15 @@ public class TutorialZoomActivity4 extends Activity {
     private static final int MENU_ID_RESET = 0;
 
     /** Image zoom view */
-    private ImageZoomView mZoomView;
+    private ImageZoomView mZoomTopView;
     /** Image zoom view */
-    private ImageZoomView mZoomView2;
+    private ImageZoomView mZoomBottomView;
     
     /** Zoom control */
     private DynamicZoomControl mZoomControl;
 
     /** Decoded bitmap image */
     private Bitmap mBitmap;
-    private Bitmap mBitmap2;
-private ImageView leftUpperView1;
-private ImageView rightUpperView1;
     /** On touch listener for zoom view */
     private LongPressZoomListener mZoomListener;
     
@@ -75,91 +72,80 @@ private ImageView rightUpperView1;
     Rect mRectSrc;
     Rect mRectDst;
     Paint mPaint;
-    
+    int firstCurrentPage = 0;
+	int secondCurrentPage = 1;
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate");
-        setContentView(R.layout.main);
-    	rotationListner = new RotationAnimationListner();
-        mZoomControl = new DynamicZoomControl();
-//leftUpperView = (ImageView)findViewById(R.id.leftUpperView);
-//rightUpperView = (ImageView)findViewById(R.id.rightUpperView);
-//        mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.image800x600);
-mBitmap = combineImages(BitmapFactory.decodeResource(getResources(), R.drawable.page1), BitmapFactory.decodeResource(getResources(), R.drawable.page2));
-mBitmap2 = combineImages(BitmapFactory.decodeResource(getResources(), R.drawable.page1), BitmapFactory.decodeResource(getResources(), R.drawable.page2));
-        mZoomListener = new LongPressZoomListener(getApplicationContext());
-        mZoomListener.setZoomControl(mZoomControl);
-        mPinchZoomListener = new PinchZoomListener(getApplicationContext());
-        mPinchZoomListener.setZoomControl(mZoomControl);
-       
-        mZoomView = (ImageZoomView)findViewById(R.id.zoomview);
-        mZoomView.setZoomState(mZoomControl.getZoomState());
-        mZoomView.setImage2(mBitmap2);
-        mZoomView.setImage(mBitmap);
- 
-        
-        mZoomView2 = (ImageZoomView)findViewById(R.id.zoomview2);
-        mZoomView2.setZoomState(mZoomControl.getZoomState());
-        mZoomView2.setImage2(mBitmap2);
-        mZoomView2.setImage(mBitmap);
-        mZoomControl.setAspectQuotient(mZoomView.getAspectQuotient());
-        mZoomControl.setAspectQuotient(mZoomView2.getAspectQuotient());
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		Log.d(TAG, "onCreate");
+		setContentView(R.layout.main);
+		rotationListner = new RotationAnimationListner();
+		mZoomControl = new DynamicZoomControl();
+		mBitmap = combineImages(
+				BitmapFactory.decodeResource(getResources(), R.drawable.page1),
+				true);
+		mZoomListener = new LongPressZoomListener(getApplicationContext());
+		mZoomListener.setZoomControl(mZoomControl);
+		mPinchZoomListener = new PinchZoomListener(getApplicationContext());
+		mPinchZoomListener.setZoomControl(mZoomControl);
 
-        resetZoomState();
-        
-        mZoomView.setOnTouchListener(mPinchZoomListener);
-        mZoomView2.setOnTouchListener(mPinchZoomListener);
-       final Button b = (Button)this.findViewById(R.id.zoomtype); 
-        b.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-            	if(longpressZoom){
-            	//mBitmap = combineImages(BitmapFactory.decodeResource(getResources(), R.drawable.page2), BitmapFactory.decodeResource(getResources(), R.drawable.page1));
-            	//mZoomView.setImage(mBitmap);
-            	    longpressZoom = false;
-                    b.setText("LongPressZoom");
-                    applyRotation(0, -90, -180, mZoomView, false);
-                }else{
-             //	mBitmap = combineImages(BitmapFactory.decodeResource(getResources(), R.drawable.page1), BitmapFactory.decodeResource(getResources(), R.drawable.page2));
-            //	mZoomView.setImage(mBitmap);
-            	    longpressZoom = true;
-                    b.setText("PinchZoom");
-                    applyRotation(0, 90, -180, mZoomView, false);
-                }
-            	
-            }
-        });
-        
-        CharSequence text = "Pinch zoom ftw!\n(Press button top left to switch between zoom modes)";
-        
-        int duration = Toast.LENGTH_LONG;
+		mZoomTopView = (ImageZoomView) findViewById(R.id.zoomview);
+		mZoomTopView.setZoomState(mZoomControl.getZoomState());
+		mZoomTopView.setImage(mBitmap);
 
-        Toast toast = Toast.makeText(this, text, duration);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
-    }
-	protected void applyRotation(int i, int j, int k, ImageView leftUpperView2,
-			boolean b) {
-    	/*rotationListner.setmLeftImage();
-    	rotationListner.setmRightImage();*/
-		rotationListner.applyRotation(i, j, k, leftUpperView2, b);
-		
+		mZoomBottomView = (ImageZoomView) findViewById(R.id.zoomview2);
+		mZoomBottomView.setZoomState(mZoomControl.getZoomState());
+		mZoomBottomView.setImage(mBitmap);
+		mZoomControl.setAspectQuotient(mZoomTopView.getAspectQuotient());
+		mZoomControl.setAspectQuotient(mZoomBottomView.getAspectQuotient());
+
+		resetZoomState();
+
+		mZoomTopView.setOnTouchListener(mPinchZoomListener);
+		mZoomBottomView.setOnTouchListener(mPinchZoomListener);
+		final Button b = (Button) this.findViewById(R.id.zoomtype);
+		b.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				if (longpressZoom) {
+					//mBitmap = combineImages(BitmapFactory.decodeResource(getResources(), R.drawable.page1), false);
+					//mZoomView.setImage(mBitmap);
+					longpressZoom = false;
+					b.setText("Previous Page");
+					applyRotation(0, 90, -180, mZoomTopView,mZoomBottomView, false);
+					firstCurrentPage-- ;
+					secondCurrentPage--; 
+				} else {
+					//mBitmap = combineImages(BitmapFactory.decodeResource(getResources(), R.drawable.page2), true);
+					//mZoomView.setImage(mBitmap);
+					//longpressZoom = true;
+					b.setText("Next Page");
+					applyRotation(0, -90, -180, mZoomTopView, mZoomBottomView,false);
+					firstCurrentPage++ ;
+					secondCurrentPage++;
+				}
+
+			}
+		});
+
+		CharSequence text = "Pinch zoom ftw!\n(Press button top left to switch between zoom modes)";
+
+		int duration = Toast.LENGTH_LONG;
+
+		Toast toast = Toast.makeText(this, text, duration);
+		toast.setGravity(Gravity.CENTER, 0, 0);
+		toast.show();
 	}
-	protected void applyRotation(int i, int j, int k, ImageZoomView leftUpperView2,
+	protected void applyRotation(int i, int j, int k, ImageZoomView leftUpperView2,ImageZoomView bottomView,
 			boolean b) {
-    	/*rotationListner.setmLeftImage();
-    	rotationListner.setmRightImage();*/
-		rotationListner.applyRotation(i, j, k, leftUpperView2, b);
-		
+		rotationListner.init(this, firstCurrentPage, secondCurrentPage);
+		rotationListner.setLoadNext(true);
+		rotationListner.applyRotation(i, j, k, leftUpperView2,bottomView, b);
 	}
     @Override
 	protected void onResume() {
 		super.onResume();
 		Log.d(TAG, "onResume");
 	}
-
-    
-    
     @Override
     public void onPause(){
         super.onPause();
@@ -172,10 +158,9 @@ mBitmap2 = combineImages(BitmapFactory.decodeResource(getResources(), R.drawable
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         mBitmap.recycle();
-        mZoomView.setOnTouchListener(null);
-        mZoomView2.setOnTouchListener(null);
+        mZoomTopView.setOnTouchListener(null);
+        mZoomBottomView.setOnTouchListener(null);
         mZoomControl.getZoomState().deleteObservers();
     }
 
@@ -207,21 +192,29 @@ mBitmap2 = combineImages(BitmapFactory.decodeResource(getResources(), R.drawable
     }
     public Bitmap combineImages(Bitmap c, Bitmap s) { // can add a 3rd parameter 'String loc' if you want to save the new image - left some code to do that at the bottom 
         Bitmap cs = null; 
-     
         int width, height = 0; 
           width = s.getWidth()+c.getWidth(); 
           height = c.getHeight() ; 
-     
         cs = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888); 
-     
         Canvas comboImage = new Canvas(cs); 
-     
         comboImage.drawBitmap(c, 0f, 0f, null); 
         comboImage.drawBitmap(s, c.getWidth(), 0f, null); 
-     
-  
         return cs; 
       } 
 
-	
+    public Bitmap combineImages(Bitmap c, boolean loadNext) { // loadNext == true if next page has to be load otherwise previous page-Ankit 
+        Bitmap cs = null; 
+        int width, height = 0; 
+			width = c.getWidth() * 2;
+			height = c.getHeight();
+        cs = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888); 
+        Canvas comboImage = new Canvas(cs); 
+		if (loadNext) {
+			comboImage.drawBitmap(c, width/2, 0f, null);
+		} else {
+			comboImage.drawBitmap(c, 0f, 0f, null);	
+		}
+       return cs; 
+      } 
+
 }

@@ -15,12 +15,15 @@ public final class R {
         public static final int image800x600=0x7f020001;
         public static final int page1=0x7f020002;
         public static final int page2=0x7f020003;
+        public static final int page3=0x7f020004;
+        public static final int page4=0x7f020005;
+        public static final int store_deafult_book=0x7f020006;
     }
     public static final class id {
-        public static final int leftUpperView=0x7f050001;
-        public static final int rightUpperView=0x7f050002;
+        public static final int parent=0x7f050000;
         public static final int zoomtype=0x7f050003;
-        public static final int zoomview=0x7f050000;
+        public static final int zoomview=0x7f050002;
+        public static final int zoomview2=0x7f050001;
     }
     public static final class layout {
         public static final int main=0x7f030000;

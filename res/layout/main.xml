@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
      
-     android:visibility="invisible"
+     android:visibility="visible"
         android:background="@android:color/holo_green_dark" />
     
     <com.sonyericsson.zoom.ImageZoomView
@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:background="@android:color/holo_blue_bright" />
+        android:background="@android:color/transparent" />
     
     
 
@@ -48,7 +48,7 @@
         android:id="@+id/zoomtype"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="LongPressZoom"
+        android:text="Next Page"
         android:visibility="visible" />
     
 </FrameLayout>

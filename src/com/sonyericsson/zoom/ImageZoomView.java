@@ -101,7 +101,7 @@ public class ImageZoomView extends View implements Observer {
 
     /** The bitmap that we're zooming in, and drawing on the screen. */
     private Bitmap mBitmap;
-    private Bitmap mBitmap2;
+    //private Bitmap mBitmap2;
     /** State of the zoom. */
     private ZoomState mState;
 
@@ -132,11 +132,11 @@ public class ImageZoomView extends View implements Observer {
         invalidate();
     }
     
-    public void setImage2(Bitmap bitmap) {
+  /*  public void setImage2(Bitmap bitmap) {
        
 mBitmap2 =bitmap;
 invalidate();
-    }
+    }*/
 
     /**
      * Set object holding the zoom state that should be used
@@ -210,7 +210,7 @@ invalidate();
             }
             
             canvas.drawBitmap(mBitmap, mRectSrc, mRectDst, mPaint);
-         //   canvas.drawBitmap(mBitmap2, mRectSrc, mRectDst, mPaint);
+      //      canvas.drawBitmap(mBitmap2, mRectSrc, mRectDst, mPaint);
         }
     }
 

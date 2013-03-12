@@ -161,7 +161,7 @@ Paint mPaint;
 			boolean b) {
     	/*rotationListner.setmLeftImage();
     	rotationListner.setmRightImage();*/
-		rotationListner.applyRotation(i, j, k, leftUpperView2, b);
+	//	rotationListner.applyRotation(i, j, k, leftUpperView2, b);
 		
 	}
 
