@@ -19,7 +19,17 @@ public class UIUtils {
 		}
 		return cs;
 	}
-
+	public static Bitmap combineImages(Bitmap c) {
+		// loadNext==true if next page has to be load otherwise previous page-Ankit
+		Bitmap cs = null;
+		int width, height = 0;
+		width = c.getWidth() * 2;
+		height = c.getHeight();
+		cs = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+		Canvas comboImage = new Canvas(cs);
+		
+		return cs;
+	}
 	public static Bitmap combineImages(Bitmap c, Bitmap s) {
 		Bitmap cs = null;
 		int width, height = 0;

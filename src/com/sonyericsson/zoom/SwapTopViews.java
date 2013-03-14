@@ -20,11 +20,12 @@ public final class SwapTopViews implements Runnable {
 	private Context context;
 	 Flip3dAnimation rotation;
 	public SwapTopViews(Context context,boolean isLoadNext, boolean isAnimationStarted,
-			ImageZoomView imageZoomView, int firstCurrentPage,
+			ImageZoomView imageZoomView, ImageZoomView imageZoomView2, int firstCurrentPage,
 			int secondCurrentPage) {
 		this.context = context;
 		this.isLoadNext = isLoadNext;
 		this.imageZoomView = imageZoomView;
+		this.imageZoomView2 = imageZoomView2;
 		this.firstCurrentPage = firstCurrentPage;
 		this.secondCurrentPage = secondCurrentPage;
 		this.isAnimationStarted = isAnimationStarted;
@@ -57,19 +58,19 @@ public final class SwapTopViews implements Runnable {
 				}
 		}}else{
 			//called from onAnimationEnd
-			final float centerX = imageZoomView.getWidth() / 2.f;
-			final float centerY = 0;
-			imageZoomView2 = imageZoomView;
-			imageZoomView.setVisibility(View.INVISIBLE);
+			final float centerX = imageZoomView2.getWidth() / 2.f;
+			final float centerY =   0;// imageZoomView2.getHeight() / 2.0f;
+			//imageZoomView2 = imageZoomView;
+			imageZoomView.setVisibility(View.GONE);
 			
 			if (isLoadNext) {
 				// LoadNext() has been called
 				// First half==firstCurrentPage+1
 				// Second half== empty
 				if(firstCurrentPage==0){
-					imageZoomView.setImage(	UIUtils.combineImages(BitmapFactory.decodeResource(context.getResources(), R.drawable.page2),false));
+					imageZoomView2.setImage(	UIUtils.combineImages(BitmapFactory.decodeResource(context.getResources(), R.drawable.page2),false));
 				}else if(firstCurrentPage==2){
-					imageZoomView.setImage(	UIUtils.combineImages(BitmapFactory.decodeResource(context.getResources(), R.drawable.page4),false));
+					imageZoomView2.setImage(	UIUtils.combineImages(BitmapFactory.decodeResource(context.getResources(), R.drawable.page4),false));
 				}
 				rotation = new Flip3dAnimation(90, 0, centerX, centerY);
 			} else {
@@ -78,9 +79,11 @@ public final class SwapTopViews implements Runnable {
 				// Second half== secondCurrentPage-1
 			}	
 		
-			
-			rotation.setDuration(3000);
-			 rotation.setFillAfter(true);
+			imageZoomView2.setVisibility(View.VISIBLE);
+			rotation.setDuration(10000);
+			//rotation.setFillBefore(true);
+			//rotation.setFillAfter(true);
+			//rotation.setFillEnabled(false);
 			 rotation.setInterpolator(new DecelerateInterpolator());
 			 imageZoomView2.startAnimation(rotation);
 		}

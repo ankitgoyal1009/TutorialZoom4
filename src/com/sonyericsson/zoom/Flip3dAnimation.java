@@ -1,6 +1,7 @@
 package com.sonyericsson.zoom;
 import android.graphics.Camera;
 import android.graphics.Matrix;
+import android.util.Log;
 import android.view.animation.Animation;
 
 import android.view.animation.Transformation;
@@ -39,12 +40,14 @@ protected void applyTransformation(float interpolatedTime, Transformation t) {
 final float fromDegrees = mFromDegrees;
 float degrees = fromDegrees + ((mToDegrees - fromDegrees) * interpolatedTime);
 
- 
+ Log.d("", "degree:"+degrees+"-:interpolatedTime:"+interpolatedTime);
 
 final float centerX = mCenterX;
 final float centerY = mCenterY;
 final Camera camera = mCamera;
-
+if(degrees==90.0f){
+	Log.d("", "degree from 90:"+degrees);
+}
  
 
 final Matrix matrix = t.getMatrix();

@@ -94,7 +94,7 @@ Paint mPaint;
 		mPinchZoomListener = new PinchZoomListener(getApplicationContext());
 		mPinchZoomListener.setZoomControl(mZoomControl);
 
-		mZoomView = (ImageZoomView) findViewById(R.id.zoomview);
+		mZoomView = (ImageZoomView) findViewById(R.id.zoom_bottom_view);
 		mZoomView.setZoomState(mZoomControl.getZoomState());
 		mZoomView.setImage(mBitmap);
 

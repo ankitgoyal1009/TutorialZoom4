@@ -54,7 +54,7 @@ public class TutorialZoomActivity4 extends Activity {
     private static final int MENU_ID_RESET = 0;
 
     /** Image zoom view */
-    private ImageZoomView mZoomTopView;
+    private ImageZoomView mZoomTopView1,mZoomTopView2;
     /** Image zoom view */
     private ImageZoomView mZoomBottomView;
     
@@ -63,6 +63,8 @@ public class TutorialZoomActivity4 extends Activity {
 
     /** Decoded bitmap image */
     private Bitmap mBitmap;
+    /** Decoded bitmap image */
+    private Bitmap mBitmap2;
     /** On touch listener for zoom view */
     private LongPressZoomListener mZoomListener;
     
@@ -84,24 +86,37 @@ public class TutorialZoomActivity4 extends Activity {
 		mBitmap = combineImages(
 				BitmapFactory.decodeResource(getResources(), R.drawable.page1),
 				true);
+		mBitmap2 = combineImages(
+				BitmapFactory.decodeResource(getResources(), R.drawable.page1),
+				false);
 		mZoomListener = new LongPressZoomListener(getApplicationContext());
 		mZoomListener.setZoomControl(mZoomControl);
 		mPinchZoomListener = new PinchZoomListener(getApplicationContext());
 		mPinchZoomListener.setZoomControl(mZoomControl);
 
-		mZoomTopView = (ImageZoomView) findViewById(R.id.zoomview);
-		mZoomTopView.setZoomState(mZoomControl.getZoomState());
-		mZoomTopView.setImage(mBitmap);
+		mZoomTopView1 = (ImageZoomView) findViewById(R.id.zoom_top_view);
+		mZoomTopView1.setZoomState(mZoomControl.getZoomState());
+		//mZoomTopView1.setImage2(mBitmap2);
+		mZoomTopView1.setImage(mBitmap);
 
-		mZoomBottomView = (ImageZoomView) findViewById(R.id.zoomview2);
+
+		mZoomTopView2 = (ImageZoomView) findViewById(R.id.zoom_top_view2);
+		mZoomTopView2.setZoomState(mZoomControl.getZoomState());
+		//mZoomTopView2.setImage2(mBitmap2);
+		mZoomTopView2.setImage(mBitmap);
+		
+		mZoomBottomView = (ImageZoomView) findViewById(R.id.zoom_bottom_view);
 		mZoomBottomView.setZoomState(mZoomControl.getZoomState());
+		//mZoomBottomView.setImage2(mBitmap2);
 		mZoomBottomView.setImage(mBitmap);
-		mZoomControl.setAspectQuotient(mZoomTopView.getAspectQuotient());
+		mZoomControl.setAspectQuotient(mZoomTopView1.getAspectQuotient());
+		mZoomControl.setAspectQuotient(mZoomTopView2.getAspectQuotient());
 		mZoomControl.setAspectQuotient(mZoomBottomView.getAspectQuotient());
 
 		resetZoomState();
 
-		mZoomTopView.setOnTouchListener(mPinchZoomListener);
+		mZoomTopView1.setOnTouchListener(mPinchZoomListener);
+		mZoomTopView2.setOnTouchListener(mPinchZoomListener);
 		mZoomBottomView.setOnTouchListener(mPinchZoomListener);
 		final Button b = (Button) this.findViewById(R.id.zoomtype);
 		b.setOnClickListener(new OnClickListener() {
@@ -111,7 +126,7 @@ public class TutorialZoomActivity4 extends Activity {
 					//mZoomView.setImage(mBitmap);
 					longpressZoom = false;
 					b.setText("Previous Page");
-					applyRotation(0, 90, -180, mZoomTopView,mZoomBottomView, false);
+					applyRotation(0, 90, -180, mZoomTopView1,mZoomTopView2,mZoomBottomView, false);
 					firstCurrentPage-- ;
 					secondCurrentPage--; 
 				} else {
@@ -119,14 +134,14 @@ public class TutorialZoomActivity4 extends Activity {
 					//mZoomView.setImage(mBitmap);
 					//longpressZoom = true;
 					b.setText("Next Page");
-					applyRotation(0, -90, -180, mZoomTopView, mZoomBottomView,false);
+					applyRotation(0, -90, -180, mZoomTopView1,mZoomTopView2, mZoomBottomView,false);
 					firstCurrentPage++ ;
 					secondCurrentPage++;
 				}
 
 			}
 		});
-
+//mZoomTopView2.setVisibility(View.GONE);
 		CharSequence text = "Pinch zoom ftw!\n(Press button top left to switch between zoom modes)";
 
 		int duration = Toast.LENGTH_LONG;
@@ -135,11 +150,11 @@ public class TutorialZoomActivity4 extends Activity {
 		toast.setGravity(Gravity.CENTER, 0, 0);
 		toast.show();
 	}
-	protected void applyRotation(int i, int j, int k, ImageZoomView leftUpperView2,ImageZoomView bottomView,
+	protected void applyRotation(int i, int j, int k, ImageZoomView topImageView1,ImageZoomView topImageView2,ImageZoomView bottomView,
 			boolean b) {
 		rotationListner.init(this, firstCurrentPage, secondCurrentPage);
 		rotationListner.setLoadNext(true);
-		rotationListner.applyRotation(i, j, k, leftUpperView2,bottomView, b);
+		rotationListner.applyRotation(i, j, k, topImageView1,topImageView2,bottomView, b);
 	}
     @Override
 	protected void onResume() {
@@ -159,7 +174,8 @@ public class TutorialZoomActivity4 extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         mBitmap.recycle();
-        mZoomTopView.setOnTouchListener(null);
+        mZoomTopView1.setOnTouchListener(null);
+        mZoomTopView2.setOnTouchListener(null);
         mZoomBottomView.setOnTouchListener(null);
         mZoomControl.getZoomState().deleteObservers();
     }

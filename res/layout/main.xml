@@ -4,20 +4,27 @@
     android:layout_height="fill_parent"
     android:orientation="horizontal" 
     android:id="@+id/parent">
+      <com.sonyericsson.zoom.ImageZoomView
+        android:id="@+id/zoom_bottom_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+     android:visibility="visible"
+        android:background="@android:color/transparent" />
     <com.sonyericsson.zoom.ImageZoomView
-        android:id="@+id/zoomview2"
+        android:id="@+id/zoom_top_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
      
-     android:visibility="visible"
-        android:background="@android:color/holo_green_dark" />
-    
+        android:background="@android:color/transparent" />
+      
     <com.sonyericsson.zoom.ImageZoomView
-        android:id="@+id/zoomview"
+        android:id="@+id/zoom_top_view2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:visibility="visible"
         android:background="@android:color/transparent" />
     
     
